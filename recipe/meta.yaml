@@ -1,17 +1,17 @@
-{% set version = "2.1.2" %}
+{% set version = "2.3.1" %}
 
 package:
   name: w3lib
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/w/w3lib/w3lib-{{ version }}.tar.gz
-  sha256: ed5b74e997eea2abe3c1321f916e344144ee8e9072a6f33463ee8e57f858a4b1
+  url: https://pypi.org/packages/source/w/w3lib/w3lib-{{ version }}.tar.gz
+  sha256: 5c8ac02a3027576174c2b61eb9a2170ba1b197cae767080771b6f1febda249a4
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  skip: true # [py<37]
+  skip: true  # [py<39]
 
 requirements:
   host:

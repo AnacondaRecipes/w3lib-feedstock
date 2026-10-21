@@ -1,11 +1,8 @@
 {% set version = "2.5.0" %}
 {% set name = "w3lib" %}
-{% set deselect_tests = "" %}
-{% set deselect_tests = 'deselect_tests + " --deselect=tests/test_url.py::UrlTests::test_file_uri_to_path"' %}  # [win]
 
-# E   AssertionError: 'C:\\windows\\clock.avi' != 'C:\\\\windows\\clock.avi'
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -25,6 +22,10 @@ requirements:
   run:
     - python
 
+{% set deselect_tests = "" %}
+# E   AssertionError: 'C:\\windows\\clock.avi' != 'C:\\\\windows\\clock.avi'
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_url.py::UrlTests::test_file_uri_to_path" %}  # [win]
+
 test:
   source_files:
     - tests
@@ -33,10 +34,11 @@ test:
   requires:
     - pip
     - pytest
+    - hypothesis >=6.148.0
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v tests {{ deselect_tests }}
+    - pytest -vv tests {{ deselect_tests }}
 
 about:
   home: https://github.com/scrapy/w3lib

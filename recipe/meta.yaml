@@ -1,25 +1,24 @@
-{% set version = "2.3.1" %}
+{% set version = "2.5.0" %}
 {% set name = "w3lib" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 5c8ac02a3027576174c2b61eb9a2170ba1b197cae767080771b6f1febda249a4
+  sha256: a7ddf714508ddc1b8563bd19ace2feb28080bbaca39326cbc964359f6754f615
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  skip: true  # [py<39]
+  skip: true  # [py<310]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - wheel
+    - hatchling >=1.27.0
   run:
     - python
 
@@ -35,10 +34,11 @@ test:
   requires:
     - pip
     - pytest
+    - hypothesis >=6.148.0
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v tests {{ deselect_tests }}
+    - pytest -vv tests {{ deselect_tests }}
 
 about:
   home: https://github.com/scrapy/w3lib

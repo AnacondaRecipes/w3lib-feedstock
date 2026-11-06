@@ -30,6 +30,7 @@ requirements:
 test:
   source_files:
     - tests
+    - w3lib
   imports:
     - w3lib
   requires:
@@ -39,7 +40,7 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -vv --doctest-modules w3lib tests {{ deselect_tests }}
+    - pytest -vv --doctest-modules tests w3lib {{ deselect_tests }}
 
 about:
   home: https://github.com/scrapy/w3lib

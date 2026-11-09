@@ -1,4 +1,4 @@
-{% set version = "2.5.0" %}
+{% set version = "2.6.0" %}
 {% set name = "w3lib" %}
 
 package:
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: a7ddf714508ddc1b8563bd19ace2feb28080bbaca39326cbc964359f6754f615
+  sha256: 821f78cfdeb9e675c736ffe0b874bd1e50e9e02997e675ce046b373c009f27be
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  skip: true  # [py<310]
+  skip: true  # [py<311]
 
 requirements:
   host:
@@ -21,6 +21,7 @@ requirements:
     - hatchling >=1.27.0
   run:
     - python
+    - frostwork >=0.2.2
 
 {% set deselect_tests = "" %}
 # E   AssertionError: 'C:\\windows\\clock.avi' != 'C:\\\\windows\\clock.avi'
@@ -29,6 +30,7 @@ requirements:
 test:
   source_files:
     - tests
+    - w3lib
   imports:
     - w3lib
   requires:
@@ -38,7 +40,7 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -vv tests {{ deselect_tests }}
+    - pytest -vv --doctest-modules tests w3lib {{ deselect_tests }}
 
 about:
   home: https://github.com/scrapy/w3lib
